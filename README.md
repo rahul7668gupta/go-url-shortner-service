@@ -33,17 +33,12 @@ To get started with the service, follow these steps:
     export SHORT_URL_DOMAIN=http://localhost:8080/
     ```
 
-3. Build the service:
+3. Run the service:
     ```
-    cd go-url-shortner-service go build
-    ```
-
-4. Run the service:
-    ```
-    ./go-url-shortner-service
+    go run main.go
     ```
 
-5. Access the service at <http://localhost:8080>.
+4. Access the service at <http://localhost:8080>.
 
 ## API Endpoints
 
