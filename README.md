@@ -40,6 +40,25 @@ To get started with the service, follow these steps:
 
 4. Access the service at <http://localhost:8080>.
 
+## Build and Run using Docker
+
+To build the Docker image, run the following command in the root directory of the project:
+```
+docker build -t url-shortener .
+```
+
+This command starts the container and maps the container's port 8080 to the host's port 8080. You can then access the URL shortener service at <http://localhost:8080>.
+
+The service can be configured using environment variables mentioned in #Configuration:
+
+You can set these environment variables using the `-e` flag when running the Docker container.
+
+```
+docker run -p 8080:8080 -e PORT=8081 url-shortener
+```
+
+This command starts the container with the `PORT` environment variable set to `8081`.
+
 ## API Endpoints
 
 * `/shorten`: Creates a new shortened URL, if asked again ask for the same URL, it returns the old short url
