@@ -22,6 +22,7 @@ type IShortnerRepo interface {
 	GetMetrics(ctx context.Context) ([]dto.Metrics, error)
 	CreateIndexOnOriginalUrl(ctx context.Context, url string, shortCode string) error
 	LookupURL(ctx context.Context, url string) (string, bool)
+	IncrementCounterForShortCode(ctx context.Context) (int64, error)
 }
 
 func NewShortnerRepository(rdb *redis.Client, logger *zap.Logger) *ShortnerRepo {
@@ -59,4 +60,9 @@ func (r *ShortnerRepo) LookupURL(ctx context.Context, url string) (string, bool)
 	}
 	// url found, return the shortened path and true
 	return shortenedPath, true
+}
+
+func (r *ShortnerRepo) IncrementCounterForShortCode(ctx context.Context) (int64, error) {
+	value, err := r.rdb.Incr(ctx, constants.SHORT_CODE_COUNTER).Result()
+	return value, err
 }

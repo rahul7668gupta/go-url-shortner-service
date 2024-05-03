@@ -1,20 +1,10 @@
 package utils
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"net/url"
 
 	"github.com/rahul7668gupta/go-url-shortner/pkg/constants"
 )
-
-func Sha256Hash(input string) string {
-	// Calculate the SHA-256 hash
-	hash := sha256.Sum256([]byte(input))
-	// Convert the hash to a hexadecimal string
-	hashString := hex.EncodeToString(hash[:])
-	return "0x" + hashString
-}
 
 func GetUrlDomain(inputUrl string) (string, error) {
 	// parse url
@@ -23,4 +13,21 @@ func GetUrlDomain(inputUrl string) (string, error) {
 		return constants.EMPTY_STRING, err
 	}
 	return parsedURL.Host, nil
+}
+
+func GetShortCodeFromId(num int64) string {
+	base62Chars := "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	if num == 0 {
+		return string(base62Chars[0])
+	}
+
+	var result []byte
+
+	for num > 0 {
+		remainder := num % 62
+		result = append([]byte{base62Chars[remainder]}, result...)
+		num = num / 62
+	}
+
+	return string(result)
 }

@@ -84,3 +84,20 @@ func TestShortnerRepo_LookupURL(t *testing.T) {
 	assert.Equal(t, true, foundUrl)
 	assert.Equal(t, shortCode, actualShortCode)
 }
+
+func TestShortnerRepo_IncrementCounterForShortCode(t *testing.T) {
+	ctx := context.Background()
+	loggerObj := logger.InitLogger()
+	redisClient, clientMock := redismock.NewClientMock()
+
+	// set redis client mock expectations
+	clientMock.ExpectIncr(constants.SHORT_CODE_COUNTER).SetVal(2)
+
+	// Initialise Repo
+	shortnerRepo := repository.NewShortnerRepository(redisClient, loggerObj)
+	// Call test func
+	counter, err := shortnerRepo.IncrementCounterForShortCode(ctx)
+	// asserts
+	assert.Nil(t, err)
+	assert.Equal(t, counter, int64(2))
+}
