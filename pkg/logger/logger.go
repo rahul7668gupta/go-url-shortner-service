@@ -10,6 +10,8 @@ import (
 )
 
 // note: this can be made a library and used in multiple codebases
+type ILogger interface {
+}
 
 func InitLogger() *zap.Logger {
 	logLevelStr := "debug" // default set to debug log, will show all logs
