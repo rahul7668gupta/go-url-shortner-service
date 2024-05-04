@@ -33,12 +33,14 @@ To get started with the service, follow these steps:
     export SHORT_URL_DOMAIN=http://localhost:8080/
     ```
 
-3. Run the service:
+3. Run redis locally on port `6379`
+
+4. Run the service:
     ```
     go run main.go
     ```
 
-4. Access the service at <http://localhost:8080>.
+5. Access the service at <http://localhost:8080>.
 
 ## Build and Run using Docker
 
@@ -47,23 +49,25 @@ To build the Docker image, run the following command in the root directory of th
 docker build -t url-shortener .
 ```
 
-This command starts the container and maps the container's port 8080 to the host's port 8080. You can then access the URL shortener service at <http://localhost:8080>.
+This command starts the container with the `PORT` environment variable set to `8081`.  You can then access the URL shortener service at <http://localhost:8081>.
+```
+docker run -p 8080:8080 -e PORT=8081 url-shortener
+```
 
 The service can be configured using environment variables mentioned in #Configuration:
 
 You can set these environment variables using the `-e` flag when running the Docker container.
 
-```
-docker run -p 8080:8080 -e PORT=8081 url-shortener
-```
-
-This command starts the container with the `PORT` environment variable set to `8081`.
-
 ## API Endpoints
 
-* `/shorten`: Creates a new shortened URL, if asked again ask for the same URL, it returns the old short url
-* `/redirect/{code}`: Redirects to the original URL for the given code.
-* `/metrics`: Returns top 3 domain names that have been shortened the most
+* `/shorten`: `POST` Creates a new shortened URL, if asked again ask for the same URL, it returns the old short url. Payload: 
+```
+{
+    "url":"https://amazon.in"
+}
+```
+* `/redirect/{code}`: `GET` Redirects to the original URL for the given code.
+* `/metrics`: `GET` Returns top 3 domain names that have been shortened the most
 number of times
 
 ## Configuration
